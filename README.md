@@ -12,7 +12,7 @@ Here are six quick steps to get started
 ```bash
 > mkdir my-folder && cd my-folder && npm init -y
 ```
-2. Install NanoMS using npm:
+2. Install NanoMS using npm
 ```bash
 > npm install nanoms
 ```
