@@ -50,7 +50,7 @@ module.exports = function () {
         const dataType = typeof data;
 
         if (dataType === 'string' || dataType === 'number' || dataType === 'boolean' || dataType === 'bigint') {
-            data = Buffer.from(data.toString());
+            data = Buffer.from(data + '');
             this.done = true;
             this.write(data);
             return this.end();
