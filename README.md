@@ -21,7 +21,7 @@ Here are six quick steps to get started
 > touch server.js
 ```
 ```javascript
-const NanoMS = require('nanoms')
+const { NanoMS } = require('nanoms')
 ```
 4. Create a new instance of NanoMS in _server.js_ and pass a port number as an argument
 ```javascript
