@@ -8,13 +8,13 @@ NanoMS is a http framework for creating microservices.
 
 Here are six quick steps to get started
 
-1. Create e new directory and initialize npm
+1. Create e new directory. Move to your new directory and and initialize npm
 ```bash
-> mkdir my-folder && npm init -y
+> mkdir my-folder && cd my-folder && npm init -y
 ```
-2. Move to your new directory and install NanoMS using npm:
+2. Install NanoMS using npm:
 ```bash
-> cd my-folder && npm install nanoms
+> npm install nanoms
 ```
 3. Create a _server.js_ file and import NanoMS
 ```bash
