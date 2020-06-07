@@ -9,10 +9,6 @@ module.exports = function () {
         writable: true,
     });
 
-    Object.defineProperty(http.ServerResponse, 'done', {
-        writable: true,
-    });
-
     //* Defining method for parsing and returning url query parameters as javascript Object
     http.IncomingMessage.prototype.params = function () {
         const URL = url.parse(this.url);
@@ -44,7 +40,6 @@ module.exports = function () {
     //* Supported types: String, Buffer, Object
     http.ServerResponse.prototype.send = function (data) {
         if (!data) {
-            this.done = true;
             return this.end();
         }
 
@@ -52,20 +47,17 @@ module.exports = function () {
 
         if (dataType === 'string' || dataType === 'number' || dataType === 'boolean' || dataType === 'bigint') {
             data = Buffer.from(data + '');
-            this.done = true;
             this.write(data);
             return this.end();
         }
 
         if (Buffer.isBuffer(data)) {
-            this.done = true;
             this.write(data);
             return this.end();
         }
 
         data = JSON.stringify(data);
         data = Buffer.from(data);
-        this.done = true;
         this.write(data);
         return this.end();
     };

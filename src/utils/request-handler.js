@@ -23,8 +23,7 @@ async function requestHandler(req, res, services, middleware) {
                     for await (mw of middleware) {
                         try {
                             await mw(req, res);
-                            if (res.done) {
-                                res.done = false;
+                            if (res.writableEnded) {
                                 return;
                             }
                         } catch (e) {
@@ -36,8 +35,7 @@ async function requestHandler(req, res, services, middleware) {
                     for (const mw in service.middleware) {
                         try {
                             await service.middleware[mw](req, res);
-                            if (res.done) {
-                                res.done = false;
+                            if (res.writableEnded) {
                                 return;
                             }
                         } catch (e) {
