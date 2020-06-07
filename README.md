@@ -68,7 +68,7 @@ NanoMS does however offer a few shorthand properties and methods
 ```javascript
 req.body // holds the request body
 req.params() // returns an object of all url queries
-req.status(/* status-code */) // used to specify the status-code to be returned. refaults to 200. returns req.
+req.status(/* status-code */) // used to specify the status-code to be returned. defaults to 200. returns req.
 req.send(/* data to be sent */) // used to send back data with the response.
                                 // data types accepted: string, number, object, Buffer...
 ```
