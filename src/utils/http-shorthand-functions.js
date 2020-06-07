@@ -44,6 +44,7 @@ module.exports = function () {
     //* Supported types: String, Buffer, Object
     http.ServerResponse.prototype.send = function (data) {
         if (!data) {
+            this.done = true;
             return this.end();
         }
 
@@ -57,6 +58,7 @@ module.exports = function () {
         }
 
         if (Buffer.isBuffer(data)) {
+            this.done = true;
             this.write(data);
             return this.end();
         }
