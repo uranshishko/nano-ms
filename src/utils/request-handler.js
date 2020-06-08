@@ -1,8 +1,12 @@
 const url = require('url');
 
+const cookieParser = require('./cookie-parser');
+
 async function requestHandler(req, res, services, middleware) {
     const method = req.method;
     const URL = url.parse(req.url);
+
+    cookieParser(req, res);
 
     let body = [];
 
