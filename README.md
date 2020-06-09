@@ -86,7 +86,7 @@ req.body; // holds the request body
 req.cookies; // returns an object with key value pairs
 req.getHeader(/* header */); // returns header or undefined if non-existent
 req.query(/* query */); // returns url query. returns undefined in non-existent. returns an object of all url queries by default.
-res.status(/* status-code */); // used to specify the status-code to be returned. returns req.
+res.status(/* status-code */); // used to specify the status-code to be returned. returns res.
 res.send(/* data to be sent */); // used to send back data with the response.
 // data types accepted: string, number, object, Buffer...
 ```
