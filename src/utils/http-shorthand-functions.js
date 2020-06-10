@@ -29,7 +29,7 @@ module.exports = function () {
     http.IncomingMessage.prototype.query = function (query) {
         const URL = url.parse(this.url);
         if (!URL.query) {
-            return {};
+            return undefined;
         }
         const queryStrings = URL.query.split('&');
         const queries = {};
@@ -88,5 +88,19 @@ module.exports = function () {
         data = Buffer.from(data);
         this.write(data);
         return this.end();
+    };
+
+    //* Defining method for serving static files. Will result in 404 if file is non-existent, or nms.static middleware isn't used
+    //! NOTE: Full file path within static folder must be used. e.g html/index.html
+    http.ServerResponse.prototype.sendFile = function (fileName) {
+        this.redirect('/' + fileName);
+    };
+
+    //* Defining method for redirecting. Defaults to 301
+    http.ServerResponse.prototype.redirect = function (url, statusCode) {
+        this.writeHead(statusCode || 301, {
+            Location: url,
+        });
+        this.end();
     };
 };
