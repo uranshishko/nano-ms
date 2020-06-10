@@ -19,24 +19,24 @@ async function requestHandler(req, res, services, middleware) {
         body = Buffer.concat(body);
         req.body = body;
 
+        //* Running globally defined middleware functions
+        for await (mw of middleware) {
+            try {
+                await mw(req, res);
+
+                const hasEnded = res.writableEnded === undefined ? res.finished : res.writableEnded;
+                if (hasEnded) {
+                    return;
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
         //* When request is finished NanoMS loops through services and matches path and method
         for (service of services) {
             if (service.path === URL.pathname) {
                 if (service.method === method) {
-                    //* If service querying is successful NanoMS runs all global middleware
-                    for await (mw of middleware) {
-                        try {
-                            await mw(req, res);
-
-                            const hasEnded = res.writableEnded === undefined ? res.finished : res.writableEnded;
-                            if (hasEnded) {
-                                return;
-                            }
-                        } catch (e) {
-                            console.log(e);
-                        }
-                    }
-
                     //* And then through locally assigned middleware
                     for (const mw in service.middleware) {
                         try {
