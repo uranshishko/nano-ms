@@ -1,4 +1,10 @@
 const http = require('http');
+const fs = require('fs');
+const { promisify } = require('util');
+const path = require('path');
+const url = require('url');
+
+const readFileAsync = promisify(fs.readFile);
 
 const requestHandler = require('./utils/request-handler');
 const createHttpShorthandFunctions = require('./utils/http-shorthand-functions.js');
@@ -10,6 +16,12 @@ class NanoMS {
 
         //* Initializing server
         this.server = http.createServer((req, res) => {
+            //* Pass on this instance of the created object to req
+            Object.defineProperty(req, 'app', {
+                value: this,
+                writable: false,
+            });
+
             requestHandler(req, res, this.services, this.middleware);
         });
 
@@ -85,6 +97,37 @@ class NanoMS {
     //* Pushes middleware to global middleware array
     use(middleware) {
         this.middleware.push(middleware);
+    }
+
+    //* Define property and assign path to folder for serving static files
+    setStatic(path) {
+        if (typeof path !== 'string') {
+            throw new Error('path must be of type string');
+        }
+
+        this.staticPath = path;
+    }
+
+    //* Built-in middleware for serving static files
+    async static(req, res) {
+        let filePath = url.parse(req.url).pathname;
+
+        const fileExtentionRegex = /([a-zA-Z0-9\s_\\.\-\(\):])+(.*)$/i;
+
+        if (!fileExtentionRegex.test(filePath)) {
+            return;
+        }
+
+        const publicPath = path.join(req.app.staticPath, filePath);
+
+        try {
+            const file = await readFileAsync(publicPath);
+            if (file) {
+                return res.send(file);
+            }
+        } catch (e) {
+            return;
+        }
     }
 
     //* Built in middleware for parsing incoming data to JSON format
