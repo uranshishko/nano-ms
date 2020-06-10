@@ -46,7 +46,7 @@ const nms = new NanoMS(3000); // 'localhost:XXXX' or '127.0.0.1:XXXX' etc can al
   * NanoMS includes two built in middleware functions for parsing 
   the request body to url-encoded or JSON format
   
-  * You can define and add your own global middleware functions with the use() method
+  * You can define and add more built-in, or your own global middleware functions with the use() method
 */
 
 nms.use(nms.json); // or nms.urlEncoded
@@ -79,14 +79,24 @@ nms.createService({
 All NanoMS service and middleware functions receive **req** and **res** as arguments.
 `req` and `res` are direct references to `http.IncomingMessage` and `http.ServerResponse`. We recommend refering to the official NodeJS documentations (https://nodejs.org/dist/latest-v12.x/docs/api/).
 
-NanoMS does however offer a few shorthand properties and methods
+NanoMS does however offer a few built-in methods, as well as shorthand properties and methods
 
 ```javascript
-req.body; // holds the request body
-req.cookies; // returns an object with key value pairs
+NanoMS.createService(/* { configuration } */); // method for creating services. (see example above)
+NanoMS.json(/* req, res */); // built-in body-parsing middleware function (Buffer to JSON)
+NanoMS.urlEncoded(/* req, res */); // built-in body-parsing middleware function (Buffer to url-encoded)
+NanoMS.setStatic(/* path */); // specify path for serving static files
+NanoMS.static(/* req, res */); // built-in middleware for serving static files from previously set path (see NanoMS.setStatic)
+NanoMS.use(/* middleware function */); // built-in method for specifying global middleware functions. passes on req and res as arguments
+
+req.app; // holds an instance of NanoMS
+req.body; // holds the request body. retuns a Buffer if no parsing middleware is used
+req.cookies; // holds an object with key value pairs
 req.getHeader(/* header */); // returns header or undefined if non-existent
 req.query(/* query */); // returns url query. returns undefined in non-existent. returns an object of all url queries by default.
 res.status(/* status-code */); // used to specify the status-code to be returned. returns res.
 res.send(/* data to be sent */); // used to send back data with the response.
 // data types accepted: string, number, object, Buffer...
+res.sendFile(/* fileName or path within static folder */); // used inside of service functions for redirecting and serving static files
+res.redirect(/* url, (optional: status-code) */);
 ```
