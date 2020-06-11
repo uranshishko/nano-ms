@@ -3,6 +3,13 @@
 NanoMS is a http framework for creating microservices.
 (This project is currently in **very early alpha stages** and will most likely be reworked a few times)
 
+## New in v1.1.0
+
+Added file serving functionality. Refer to API documentation below. The rest of the API should not be affected.
+This new API relies on [_mime-types_](https://www.npmjs.com/package/mime-types) as a dependency for content type detection.
+
+Here's an example on how to use the new file serving API: [![Edit restless-meadow-ib9pl](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/restless-meadow-ib9pl?autoresize=1&fontsize=14&hidenavigation=1&theme=dark)
+
 ## Get Started
 
 ### Requirements
@@ -81,6 +88,8 @@ All NanoMS service and middleware functions receive **req** and **res** as argum
 
 NanoMS does however offer a few built-in methods, as well as shorthand properties and methods
 
+## API
+
 ```javascript
 NanoMS.createService(/* { configuration } */); // method for creating services. (see example above)
 NanoMS.json(/* req, res */); // built-in body-parsing middleware function (Buffer to JSON)
@@ -97,6 +106,6 @@ req.query(/* query */); // returns url query. returns undefined in non-existent.
 res.status(/* status-code */); // used to specify the status-code to be returned. returns res.
 res.send(/* data to be sent */); // used to send back data with the response.
 // data types accepted: string, number, object, Buffer...
-res.sendFile(/* fileName or path within static folder */); // used inside of service functions for redirecting and serving static files
+res.sendFile(/* fileName or path within static folder. ilename extention can be omitted if the file is a HTML file */); // used inside of service functions for redirecting and serving static files
 res.redirect(/* url, (optional: status-code) */);
 ```
