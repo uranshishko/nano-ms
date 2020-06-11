@@ -1,8 +1,10 @@
 const http = require('http');
 const fs = require('fs');
-const { promisify } = require('util');
 const path = require('path');
 const url = require('url');
+const { promisify } = require('util');
+
+const mime = require('mime-types');
 
 const readFileAsync = promisify(fs.readFile);
 
@@ -120,10 +122,16 @@ class NanoMS {
 
         const publicPath = path.join(req.app.staticPath, filePath);
 
+        const contentType = mime.lookup(filePath);
+
         try {
             const file = await readFileAsync(publicPath);
             if (file) {
-                return res.send(file);
+                res.writeHead(200, {
+                    'Content-Length': Buffer.byteLength(file),
+                    'Content-Type': contentType,
+                });
+                return res.end(file);
             }
         } catch (e) {
             return;
