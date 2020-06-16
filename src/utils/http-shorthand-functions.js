@@ -1,5 +1,9 @@
+const fs = require('fs');
 const http = require('http');
+const { promisify } = require('util');
 const url = require('url');
+
+const readFileAsync = promisify(fs.readFile);
 
 //TODO Add more shorthand functions
 
@@ -95,14 +99,25 @@ module.exports = function () {
 
     //* Defining method for serving static files. Will result in 404 if file is non-existent, or nms.static middleware isn't used
     //! NOTE: Full file path within static folder must be used. e.g html/index.html
-    http.ServerResponse.prototype.sendFile = function (fileName) {
-        const fileExtentionRegex = /([a-zA-Z0-9\s_\\.\-\(\):])+(.*)$/i;
+    http.ServerResponse.prototype.render = async function (fileName) {
+        const fileExtentionRegex = /\.[a-zA-Z0-9]+$/i;
 
         if (!fileExtentionRegex.test(fileName)) {
             fileName += '.html';
         }
 
-        this.redirect('/' + fileName);
+        try {
+            const html = await readFileAsync(this.app.staticPath + '/' + fileName);
+            if (html) {
+                this.writeHead(200, {
+                    'Content-Type': 'text/html',
+                    'Content-Length': Buffer.byteLength(html),
+                });
+                this.end(html);
+            }
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     //* Defining method for redirecting. Defaults to 301
