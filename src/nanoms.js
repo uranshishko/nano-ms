@@ -24,6 +24,11 @@ class NanoMS {
                 writable: false,
             });
 
+            Object.defineProperty(res, 'app', {
+                value: this,
+                writable: false,
+            });
+
             requestHandler(req, res, this.services, this.middleware);
         });
 
@@ -114,7 +119,7 @@ class NanoMS {
     async static(req, res) {
         let filePath = url.parse(req.url).pathname;
 
-        const fileExtentionRegex = /([a-zA-Z0-9\s_\\.\-\(\):])+(.*)$/i;
+        const fileExtentionRegex = /\.[a-zA-Z0-9]+$/i;
 
         if (!fileExtentionRegex.test(filePath)) {
             return;
