@@ -106,6 +106,6 @@ req.query(/* query */); // returns url query. returns undefined in non-existent.
 res.status(/* status-code */); // used to specify the status-code to be returned. returns res.
 res.send(/* data to be sent */); // used to send back data with the response.
 // data types accepted: string, number, object, Buffer...
-res.sendFile(/* fileName or path within static folder. ilename extention can be omitted if the file is a HTML file */); // used inside of service functions for redirecting and serving static files
+res.render(/* fileName or path within static folder. ilename extention can be omitted*/); // used inside of service functions for rendering html files
 res.redirect(/* url, (optional: status-code) */);
 ```
