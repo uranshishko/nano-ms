@@ -21,7 +21,10 @@ module.exports = function () {
         },
     });
 
-    //* Defining method for getting a header. Returns undefined if non-existent.
+    /**
+     * * Method for getting a request header. Returns undefined if non-existent.
+     * @param {string} header
+     */
     http.IncomingMessage.prototype.getHeader = function (header) {
         if (typeof header !== 'string') {
             throw new Error('Header must be of type string');
@@ -29,7 +32,10 @@ module.exports = function () {
         return this.headers[header] ? this.headers[header] : undefined;
     };
 
-    //* Defining method for parsing and returning url query parameters as javascript Object
+    /**
+     * * Method for parsing and returning url query parameters as javascript Object
+     * @param {*} query
+     */
     http.IncomingMessage.prototype.query = function (query) {
         const URL = url.parse(this.url);
         if (!URL.query) {
@@ -56,8 +62,11 @@ module.exports = function () {
         return queries;
     };
 
-    //* Defining method for setting response code
-    //* Can be chained with send method
+    /**
+     * * Method for setting response code
+     * * Can be chained with send method
+     * @param {number} code
+     */
     http.ServerResponse.prototype.status = function (code) {
         if (isNaN(code)) {
             throw new Error({ error: `${code} is not a number` });
@@ -68,8 +77,11 @@ module.exports = function () {
         return this;
     };
 
-    //* Defining method for sending back data and ending the response
-    //* Supported types: primitive types, Buffer, Object
+    /**
+     * * Method for sending back data and ending the response
+     * * Supported types: primitive types, Buffer, Objects
+     * @param {any} data
+     */
     http.ServerResponse.prototype.send = function (data) {
         if (!data) {
             return this.end();
@@ -97,8 +109,12 @@ module.exports = function () {
         return this.end(data);
     };
 
-    //* Defining method for serving static files. Will result in 404 if file is non-existent, or nms.static middleware isn't used
-    //! NOTE: Full file path within static folder must be used. e.g html/index.html
+    /**
+     * * Defining method for serving static files. Will result in 404 if file is non-existent, or nms.static middleware isn't used
+     * ! NOTE: Full file path within static folder must be used. e.g html/index.html
+     * @param {string} fileName
+     * @returns {void}
+     */
     http.ServerResponse.prototype.render = async function (fileName) {
         const fileExtentionRegex = /\.[a-zA-Z0-9]+$/i;
 
@@ -120,7 +136,11 @@ module.exports = function () {
         }
     };
 
-    //* Defining method for redirecting. Defaults to 301
+    /**
+     * * Method for redirecting. Status code defaults to 301
+     * @param {string} url
+     * @param {number} statusCode
+     */
     http.ServerResponse.prototype.redirect = function (url, statusCode) {
         this.writeHead(statusCode || 301, {
             Location: url,

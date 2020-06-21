@@ -11,8 +11,12 @@ const readFileAsync = promisify(fs.readFile);
 const requestHandler = require('./utils/request-handler');
 const createHttpShorthandFunctions = require('./utils/http-shorthand-functions.js');
 
-class NanoMS {
-    constructor(host) {
+class /** @class */ NanoMS {
+    /**
+     * @constructor creates a new instance of NanoMS
+     * @param {number} port
+     */
+    constructor(port) {
         //* Creating shorthand functions for HTTP requests and responses
         createHttpShorthandFunctions();
 
@@ -32,36 +36,39 @@ class NanoMS {
             requestHandler(req, res, this.services, this.middleware);
         });
 
-        var message;
-
-        if (String(host).includes(':')) {
-            host = {
-                host: host.split(':')[0],
-                port: host.split(':')[1],
-            };
-
-            message = host;
-        } else {
-            message = `port ${host}`;
+        if (typeof port !== number) {
+            try {
+                port = Number(port);
+            } catch (e) {
+                port = 3000;
+            }
         }
 
-        this.server.listen(host, console.log(`\x1b[35mNanoMS\x1b[33m: Listening on ${message}\x1b[0m`));
+        this.server.listen(port, console.log(`\x1b[35mNanoMS\x1b[33m: Listening on port ${port}\x1b[0m`));
 
-        //* creating service array
+        /**
+         * * Array where all services are stored
+         * @type Function[]
+         */
         this.services = [];
-        //* creating middleware array
+        /**
+         * * Array where all global middleware are stored
+         * @type Function[]
+         */
         this.middleware = [];
     }
 
-    //* createService creates a service object that is pushed into service array
-    //* Takes an object as a single argument
-    createService(obj) {
-        if (typeof obj !== 'object') {
+    /**
+     * * createService creates a service object that is pushed into service array
+     * @param {{ path: string, method: string, middleware: {[key: string]: Function}, func: Function}} service
+     */
+    createService(service) {
+        if (typeof service !== 'object') {
             throw new Error('Supplied options must be of type "object"');
         }
 
         const allowedOptions = ['method', 'path', 'func', 'middleware'];
-        const options = Object.keys({ ...obj });
+        const options = Object.keys({ ...service });
 
         const hasAllowedOoptions = options.every((option) => allowedOptions.includes(option));
 
@@ -69,44 +76,50 @@ class NanoMS {
             throw new Error('Supplied options are not allowed');
         }
 
-        if (typeof obj.method !== 'string') {
+        if (typeof service.method !== 'string') {
             throw new Error('method property must be of type "string"');
         }
 
-        if (typeof obj.path !== 'string') {
+        if (typeof service.path !== 'string') {
             throw new Error('path property must be of type "string"');
         }
 
-        if (obj.method === 'GET' || obj.method === 'POST' || obj.method === 'PATCH' || obj.method === 'DELETE') {
+        if (service.method === 'GET' || service.method === 'POST' || service.method === 'PATCH' || service.method === 'DELETE') {
         } else {
-            throw new Error(`Invalid HTTP Method: ${obj.method}`);
+            throw new Error(`Invalid HTTP Method: ${service.method}`);
         }
 
-        if (typeof obj.func !== 'function') {
+        if (typeof service.func !== 'function') {
             throw new Error('func property must be of type "function"');
         }
 
-        if (obj.middleware) {
-            if (typeof obj.middleware !== 'object') {
+        if (service.middleware) {
+            if (typeof service.middleware !== 'object') {
                 throw new Error('middleware property must be of type "object"');
             }
 
-            for (const mw in obj.middleware) {
-                if (typeof obj.middleware[mw] !== 'function') {
+            for (const mw in service.middleware) {
+                if (typeof service.middleware[mw] !== 'function') {
                     throw new Error('middleware must be of type "function"');
                 }
             }
         }
 
-        this.services.push({ ...obj });
+        this.services.push({ ...service });
     }
 
-    //* Pushes middleware to global middleware array
+    /**
+     * * Pushes middleware to global middleware array
+     * @param {function middleware(http.IncomingMessage, http.ServerResponse) {}} middleware
+     */
     use(middleware) {
         this.middleware.push(middleware);
     }
 
-    //* Define property and assign path to folder for serving static files
+    /**
+     * * Define path to folder for serving static files
+     * @param {string} path
+     */
     setStatic(path) {
         if (typeof path !== 'string') {
             throw new Error('path must be of type string');
@@ -115,7 +128,12 @@ class NanoMS {
         this.staticPath = path;
     }
 
-    //* Built-in middleware for serving static files
+    /**
+     * * Built-in middleware for serving static files
+     * @param {http.IncomingMessage} req
+     * @param {http.ServerResponse} res
+     * @returns {void} void
+     */
     async static(req, res) {
         let filePath = url.parse(req.url).pathname;
 
@@ -143,8 +161,11 @@ class NanoMS {
         }
     }
 
-    //* Built in middleware for parsing incoming data to JSON format
-    json(req, res) {
+    /**
+     * * Built in middleware for parsing incoming data to JSON format
+     * @param {http.IncomingMessage} req
+     */
+    static json(req) {
         if (req.method === 'GET') {
             return;
         }
@@ -156,8 +177,11 @@ class NanoMS {
         }
     }
 
-    //* Built in middleware for parsing incoming data to url-encoded format
-    urlEncoded(req, res) {
+    /**
+     * * Built in middleware for parsing incoming data to url-encoded format
+     * @param {http.IncomingMessage} req
+     */
+    static urlEncoded(req) {
         if (req.method === 'GET') {
             return;
         }
