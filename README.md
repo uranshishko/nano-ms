@@ -56,7 +56,7 @@ const nms = new NanoMS(3000); // 'localhost:XXXX' or '127.0.0.1:XXXX' etc can al
   * You can define and add more built-in, or your own global middleware functions with the use() method
 */
 
-nms.use(nms.json); // or nms.urlEncoded
+nms.use(NanoMS.json); // or NanoMS.urlEncoded
 ```
 
 6. Lastly, start defining your service endpoints with the `createService()` method
@@ -84,7 +84,7 @@ nms.createService({
 ## Details
 
 All NanoMS service and middleware functions receive **req** and **res** as arguments.
-`req` and `res` are direct references to `http.IncomingMessage` and `http.ServerResponse`. We recommend refering to the official NodeJS documentations (https://nodejs.org/dist/latest-v12.x/docs/api/).
+`req` and `res` are direct references to `http.IncomingMessage` and `http.ServerResponse`. We recommend refering to the official NodeJS documentations [Node JS](https://nodejs.org/dist/latest-v12.x/docs/api/).
 
 NanoMS does however offer a few built-in methods, as well as shorthand properties and methods
 
