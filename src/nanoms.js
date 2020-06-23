@@ -36,7 +36,7 @@ class /** @class */ NanoMS {
             requestHandler(req, res, this.services, this.middleware);
         });
 
-        if (typeof port !== number) {
+        if (typeof port !== 'number') {
             try {
                 port = Number(port);
             } catch (e) {
