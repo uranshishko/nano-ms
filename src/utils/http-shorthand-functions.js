@@ -102,7 +102,7 @@ module.exports = function () {
 
         data = JSON.stringify(data);
         data = Buffer.from(data);
-        this.writeHead(200, {
+        this.writeHead(this.statusCode, {
             'Content-Length': Buffer.byteLength(data),
             'Content-Type': 'application/json',
         });
