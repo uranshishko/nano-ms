@@ -43,7 +43,7 @@ const { NanoMS } = require('nanoms');
 4. Create a new instance of NanoMS in _server.js_ and pass a port number as an argument
 
 ```javascript
-const nms = new NanoMS(3000); // 'localhost:XXXX' or '127.0.0.1:XXXX' etc can also be used if host needs to be specified
+const nms = new NanoMS(3000); // NanoMS accepts a port number
 ```
 
 5. Specify a body-parsing middleware to be used with the `use()` method
