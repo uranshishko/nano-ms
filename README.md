@@ -117,6 +117,7 @@ NanoMS.use(/* middleware function */); // built-in method for specifying global 
 req.app; // holds an instance of NanoMS
 req.body; // holds the request body. retuns a Buffer if no parsing middleware is used
 req.cookies; // holds an object with key value pairs
+req.params; // holds an object with key value pairs representing named router parameters and their values.
 req.getHeader(/* header */); // returns header or undefined if non-existent
 req.query(/* query */); // returns url query. returns undefined in non-existent. returns an object of all url queries by default.
 res.status(/* status-code */); // used to specify the status-code to be returned. returns res.
