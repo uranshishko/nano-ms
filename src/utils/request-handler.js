@@ -10,6 +10,9 @@ async function requestHandler(req, res, services, middleware) {
 
     let body = [];
 
+    //* Initialize url params object on http.IncomingMessage
+    req.params = {};
+
     //* If data is sent along with request, NanoMS stores it as a Buffer in req.body
     //! NOTE: body-parsing middleware is required in order to read the data from req.body
     //! Use built in JSON or url-encoded parsers (NanoMS.json OR NanoMS.urlEncoded)
@@ -35,7 +38,27 @@ async function requestHandler(req, res, services, middleware) {
 
         //* When request is finished NanoMS loops through services and matches path and method
         for (service of services) {
-            if (service.path === URL.pathname) {
+            //* Check if a service path accepts url parameters
+            const paramsRegex = /:[a-zA-Z0-9].+/g;
+
+            let parsedServicePath;
+
+            if (service.path.match(paramsRegex)) {
+                parsedServicePath = service.path.split('/');
+                let url = URL.pathname.split('/');
+
+                for (let i = 0; i < parsedServicePath.length; i++) {
+                    if (parsedServicePath[i].match(paramsRegex)) {
+                        //* Populate params object on http.IncomingMessage
+                        req.params[parsedServicePath[i].replace(':', '')] = url[i];
+                        parsedServicePath[i] = url[i];
+                    }
+                }
+
+                parsedServicePath = parsedServicePath.join('/');
+            }
+
+            if ((parsedServicePath ? parsedServicePath : service.path) === URL.pathname) {
                 if (service.method === method) {
                     //* And then through locally assigned middleware
                     for (const mw in service.middleware) {

@@ -22,7 +22,7 @@ class /** @class */ NanoMS {
 
         //* Initializing server
         this.server = http.createServer((req, res) => {
-            //* Pass on this instance of the created object to req
+            //* Pass on this instance of the created object to req and res
             Object.defineProperty(req, 'app', {
                 value: this,
                 writable: false,
@@ -70,9 +70,9 @@ class /** @class */ NanoMS {
         const allowedOptions = ['method', 'path', 'func', 'middleware'];
         const options = Object.keys({ ...service });
 
-        const hasAllowedOoptions = options.every((option) => allowedOptions.includes(option));
+        const hasAllowedOptions = options.every((option) => allowedOptions.includes(option));
 
-        if (!hasAllowedOoptions) {
+        if (!hasAllowedOptions) {
             throw new Error('Supplied options are not allowed');
         }
 

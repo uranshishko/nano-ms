@@ -3,12 +3,28 @@
 NanoMS is a http framework for creating microservices.
 (This project is currently in **very early alpha stages** and will most likely be reworked a few times)
 
-## New in v1.1.0
+## New in v1.2.0
 
 Added file serving functionality. Refer to API documentation below. The rest of the API should not be affected.
 This new API relies on [_mime-types_](https://www.npmjs.com/package/mime-types) as a dependency for content type detection.
 
 Here's an example on how to use the new file serving API: [![Edit restless-meadow-ib9pl](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/restless-meadow-ib9pl?autoresize=1&fontsize=14&hidenavigation=1&theme=dark)
+
+Added named route parameters. Accessed via params property on req (http.IncomingMessage).
+Example:
+
+```javascript
+nms.createService({
+    path: '/users/:id',
+    method: 'GET',
+    func(req, res) {
+        console.log(req.params.id);
+        res.send();
+    },
+});
+
+// GET /users/12345 => 12345
+```
 
 ## Get Started
 
