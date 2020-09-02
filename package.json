@@ -1,6 +1,6 @@
 {
     "name": "nanoms",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Framework for building http microservices",
     "main": "src/index.js",
     "scripts": {},
@@ -20,6 +20,9 @@
         "url": "https://github.com/uranshishko/nano-ms/issues"
     },
     "homepage": "https://github.com/uranshishko/nano-ms#readme",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
     "devDependencies": {},
     "dependencies": {
         "mime-types": "^2.1.27"
