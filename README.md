@@ -5,13 +5,13 @@ NanoMS is a http framework for creating microservices.
 
 ## New in v1.2.0
 
-Added file serving functionality. Refer to API documentation below. The rest of the API should not be affected.
-This new API relies on [_mime-types_](https://www.npmjs.com/package/mime-types) as a dependency for content type detection.
+1.  Added file serving functionality. Refer to API documentation below. The rest of the API should not be affected.
+    This new API relies on [_mime-types_](https://www.npmjs.com/package/mime-types) as a dependency for content type detection.
 
 Here's an example on how to use the new file serving API: [![Edit restless-meadow-ib9pl](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/restless-meadow-ib9pl?autoresize=1&fontsize=14&hidenavigation=1&theme=dark)
 
-Added named route parameters. Accessed via params property on req (http.IncomingMessage).
-Example:
+2.  Added named route parameters. Accessed via params property on req (http.IncomingMessage).
+    Example:
 
 ```javascript
 nms.createService({
@@ -107,12 +107,15 @@ NanoMS does however offer a few built-in methods, as well as shorthand propertie
 ## API
 
 ```javascript
-NanoMS.createService(/* { configuration } */); // method for creating services. (see example above)
+// instance methods
+nms.createService(/* { configuration } */); // method for creating services. (see example above)
+nms.setStatic(/* path */); // specify path for serving static files
+nms.static(/* req, res */); // built-in middleware for serving static files from previously set path (see NanoMS.setStatic)
+nms.use(/* middleware function */); // built-in method for specifying global middleware functions. passes on req and res as arguments
+
+// static methods
 NanoMS.json(/* req, res */); // built-in body-parsing middleware function (Buffer to JSON)
 NanoMS.urlEncoded(/* req, res */); // built-in body-parsing middleware function (Buffer to url-encoded)
-NanoMS.setStatic(/* path */); // specify path for serving static files
-NanoMS.static(/* req, res */); // built-in middleware for serving static files from previously set path (see NanoMS.setStatic)
-NanoMS.use(/* middleware function */); // built-in method for specifying global middleware functions. passes on req and res as arguments
 
 req.app; // holds an instance of NanoMS
 req.body; // holds the request body. retuns a Buffer if no parsing middleware is used
@@ -123,6 +126,6 @@ req.query(/* query */); // returns url query. returns undefined in non-existent.
 res.status(/* status-code */); // used to specify the status-code to be returned. returns res.
 res.send(/* data to be sent */); // used to send back data with the response.
 // data types accepted: string, number, object, Buffer...
-res.render(/* fileName or path within static folder. ilename extention can be omitted*/); // used inside of service functions for rendering html files
+res.render(/* fileName or path within static folder. Filename extention can be omitted*/); // used inside of service functions for rendering html files
 res.redirect(/* url, (optional: status-code) */);
 ```
