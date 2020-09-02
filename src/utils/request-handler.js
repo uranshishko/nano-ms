@@ -47,6 +47,10 @@ async function requestHandler(req, res, services, middleware) {
                 parsedServicePath = service.path.split('/');
                 let url = URL.pathname.split('/');
 
+                if (url[url.length - 1] === '') {
+                    url.pop();
+                }
+
                 for (let i = 0; i < parsedServicePath.length; i++) {
                     if (parsedServicePath[i].match(paramsRegex)) {
                         //* Populate params object on http.IncomingMessage
@@ -56,6 +60,7 @@ async function requestHandler(req, res, services, middleware) {
                 }
 
                 parsedServicePath = parsedServicePath.join('/');
+                URL.pathname = url.join('/');
             }
 
             if ((parsedServicePath ? parsedServicePath : service.path) === URL.pathname) {
