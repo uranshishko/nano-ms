@@ -20,9 +20,6 @@
         "url": "https://github.com/uranshishko/nano-ms/issues"
     },
     "homepage": "https://github.com/uranshishko/nano-ms#readme",
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/uranshishko"
-    },
     "devDependencies": {},
     "dependencies": {
         "mime-types": "^2.1.27"
