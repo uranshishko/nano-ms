@@ -21,7 +21,7 @@
     },
     "homepage": "https://github.com/uranshishko/nano-ms#readme",
     "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
+        "registry": "https://npm.pkg.github.com/uranshishko"
     },
     "devDependencies": {},
     "dependencies": {
