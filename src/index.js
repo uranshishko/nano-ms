@@ -5,5 +5,6 @@
  */
 
 module.exports = {
-    NanoMS: require('./nanoms'),
+	NanoMS: require('./nanoms'),
+	...require('./errors'),
 };

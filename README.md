@@ -15,15 +15,50 @@ Here's an example on how to use the new file serving API: [![Edit restless-meado
 
 ```javascript
 nms.createService({
-    path: '/users/:id',
-    method: 'GET',
-    func(req, res) {
-        console.log(req.params.id);
-        res.send();
-    },
+	path: '/users/:id',
+	method: 'GET',
+	func(req, res) {
+		console.log(req.params.id);
+		res.send();
+	},
 });
 
 // GET /users/12345 => 12345
+```
+
+## New in v.1.3.0
+
+1. Added a number of HttpExceptions. See full list below.
+   Use one of the built in exceptions or, create a custom exception by using, or, by extending `HttpException` class:
+
+```javascript
+// Built-in exception example:
+const { NotFoundException } = require('nanoms');
+
+nms.createService({
+  path: '/users/:id',
+  method: 'GET',
+  async func(req, res) {
+    try {
+      const user = await User.findById(req.params.id);
+    } catch(e) {
+      throw new NotFoundException('User could not be found!');
+    }
+  }
+})
+
+//---
+// Sending a custom http exception
+const { HttpException } = require('nanoms');
+
+nms.createService({
+  path: '/error,
+  method: 'GET',
+  func(req, res) {
+    throw new HttpException(/*message*/, /*status code*/):
+  }
+})
+
 ```
 
 ## Get Started
@@ -66,7 +101,7 @@ const nms = new NanoMS(3000); // NanoMS accepts a port number
 
 ```javascript
 /*
-  * NanoMS includes two built in middleware functions for parsing 
+  * NanoMS includes two built in middleware functions for parsing
   the request body to url-encoded or JSON format
   
   * You can define and add more built-in, or your own global middleware functions with the use() method
@@ -129,3 +164,25 @@ res.send(/* data to be sent */); // used to send back data with the response.
 res.render(/* fileName or path within static folder. Filename extention can be omitted*/); // used inside of service functions for rendering html files
 res.redirect(/* url, (optional: status-code) */);
 ```
+
+List of http exceptions:
+
+- BadRequestException
+- UnauthorizedException
+- NotFoundException
+- ForbiddenException
+- NotAcceptableException
+- RequestTimeoutException
+- ConflictException
+- GoneException
+- HttpVersionNotSupportedException
+- PayloadTooLargeException
+- UnsupportedMediaTypeException
+- UnprocessableEntityException
+- InternalServerErrorException
+- NotImplementedException
+- ImATeapotException
+- MethodNotAllowedException
+- BadGatewayException
+- ServiceUnavailableException
+- GatewayTimeoutException
