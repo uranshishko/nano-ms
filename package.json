@@ -1,29 +1,26 @@
 {
-	"name": "nanoms",
-	"version": "1.3.0",
-	"description": "Framework for building http microservices",
-	"main": "src/index.js",
-	"scripts": {},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/uranshishko/nano-ms.git"
-	},
-	"keywords": [
-		"microservice",
-		"framework",
-		"http",
-		"nodejs"
-	],
-	"author": "Uran Shishko",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/uranshishko/nano-ms/issues"
-	},
-	"homepage": "https://github.com/uranshishko/nano-ms#readme",
-	"devDependencies": {
-		"prettier": "2.1.2"
-	},
-	"dependencies": {
-		"mime-types": "^2.1.27"
-	}
+    "name": "nanoms",
+    "version": "1.4.0",
+    "description": "Framework for building http microservices",
+    "main": "src/index.js",
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/uranshishko/nano-ms.git"
+    },
+    "keywords": [
+        "microservice",
+        "framework",
+        "http",
+        "nodejs"
+    ],
+    "author": "Uran Shishko",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/uranshishko/nano-ms/issues"
+    },
+    "homepage": "https://github.com/uranshishko/nano-ms#readme",
+    "dependencies": {
+        "mime-types": "^2.1.27"
+    }
 }
